@@ -1,9 +1,9 @@
-import Image from "next/image";
+import Homepage from "./components/Homepage/Homepage";
 
 export default function Home() {
   return (
-    <main className="btn">
-      Helo car doctor
+    <main>
+      <Homepage></Homepage>
     </main>
   );
 }

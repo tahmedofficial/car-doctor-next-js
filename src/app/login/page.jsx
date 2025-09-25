@@ -1,11 +1,28 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import SocialSignin from '../components/shared/SocialSignin';
 
 const page = () => {
 
-    const handleLogin = () => {
+    const router = useRouter();
+
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        const response = await signIn("credentials", {
+            email,
+            password,
+            redirect: false
+        })
+        if (response.status === 200) {
+            router.push("/")
+        }
 
     }
 
@@ -29,13 +46,7 @@ const page = () => {
                         <button className=' btn btn-primary'>Login</button>
 
                     </form>
-                    <div className='space-y-6'>
-                        <h1>Signin with social linl</h1>
-                        <div className='flex items-center justify-around'>
-                            <button className=' btn btn-primary'>Google</button>
-                            <button className=' btn btn-primary'>Facebook</button>
-                        </div>
-                    </div>
+                    <SocialSignin></SocialSignin>
                     <h1>Do not have an account ? <Link className='text-blue-800 font-medium' href="/signup">Signup</Link></h1>
                 </div>
             </div>

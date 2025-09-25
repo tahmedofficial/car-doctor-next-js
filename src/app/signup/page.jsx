@@ -5,7 +5,28 @@ import React from 'react';
 
 const page = () => {
 
-    const handleSignup = () => {
+    const handleSignup = async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const user = {
+            name: form.name.value,
+            email: form.email.value,
+            password: form.password.value
+        }
+        console.log("New user", user);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}signup/api`, {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+                "content-type": "application/json"
+            }
+        })
+
+        console.log("Response", response);
+        if (response) {
+            form.reset();
+        }
 
     }
 
@@ -19,6 +40,10 @@ const page = () => {
                 <div className='border-2 p-12 space-y-5'>
                     <form onSubmit={handleSignup} className='space-y-5'>
                         <div>
+                            <label htmlFor="Name">Name</label> <br />
+                            <input className='outline-0 border p-1' type="text" name='name' placeholder='Your name' />
+                        </div>
+                        <div>
                             <label htmlFor="email">Email</label> <br />
                             <input className='outline-0 border p-1' type="email" name='email' placeholder='Your email' />
                         </div>
@@ -26,7 +51,7 @@ const page = () => {
                             <label htmlFor="password">Password</label> <br />
                             <input className='outline-0 border p-1' type="password" name='password' placeholder='Your email' />
                         </div>
-                        <button className=' btn btn-primary'>Login</button>
+                        <button className=' btn btn-primary'>Sign Up</button>
 
                     </form>
                     <div className='space-y-6'>

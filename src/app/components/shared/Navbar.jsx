@@ -1,11 +1,23 @@
+"use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { use } from 'react';
 import { IoCartOutline } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
+import { signOut, useSession } from 'next-auth/react';
 
 
 const Navbar = () => {
+
+    const session = useSession();
+    console.log(session);
+    let user
+    if (session.data?.user) {
+        user = session.data.user
+    } else {
+        user = null
+    }
+
 
     const navItems = [
         {
@@ -52,6 +64,11 @@ const Navbar = () => {
                         <IoCartOutline className='text-xl' />
                         <CiSearch className='text-xl' />
                         <a className="btn">Appointment</a>
+                        {
+                            user ? <button onClick={() => signOut()} className="btn">Log Out</button> :
+                                <Link className="btn" href="/login">Login</Link>
+                        }
+
                     </div>
                 </div>
             </div>
